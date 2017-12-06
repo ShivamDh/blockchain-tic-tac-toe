@@ -1,0 +1,20 @@
+# compiled output
+/dist
+/dist-server
+/tmp
+/out-tsc
+
+# dependencies
+/node_modules
+
+# Ignore npm/yarn debug log
+npm-debug.log
+
+package*
+
+tsconfig.json
+tslint.json
+
+# System Files
+.DS_Store
+Thumbs.db
