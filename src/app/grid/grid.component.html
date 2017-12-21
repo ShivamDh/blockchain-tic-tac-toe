@@ -1,21 +1,15 @@
 <div class="grid">
 	<table class="table" style="border-collapse: collapse">
 		<tbody>
-			<tr class="row-1">
-				<th class="col-1"></th>
-				<th class="col-2"></th>
-				<th class="col-3"></th>
-			</tr>
-			<tr class="row-2">
-				<th class="col-1"></th>
-				<th class="col-2"></th>
-				<th class="col-3"></th>
-			</tr>
-	  		<tr class="row-3">
-			    <th class="col-1"></th>
-				<th class="col-2"></th>
-				<th class="col-3"></th>
-			</tr>
+			<ng-container *ngFor="let grid of grids; let i = index">
+				<tr *ngIf="i%3 == 0" class="row-{{i}}">
+					<ng-container *ngFor="let grid of grids; let j = index">
+						<th *ngIf="j%3 == 0" class="col-{{j}}" (click)="cellClicked(i+j/3)">
+							Test Cell
+						</th>
+					</ng-container>
+				</tr>
+			</ng-container>
 		</tbody>
 	</table>
 </div>
