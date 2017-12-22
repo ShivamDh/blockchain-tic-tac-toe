@@ -1,11 +1,17 @@
 <div class="grid">
+	<div class="currentTurn"> 
+		{{gameMessage}}
+	</div>
 	<table class="table" style="border-collapse: collapse">
 		<tbody>
 			<ng-container *ngFor="let grid of grids; let i = index">
-				<tr *ngIf="i%3 == 0" class="row-{{i}}">
+				<tr *ngIf="i%3 == 0" class="row-{{i/3 + 1}}">
 					<ng-container *ngFor="let grid of grids; let j = index">
-						<th *ngIf="j%3 == 0" class="col-{{j}}" (click)="cellClicked(i+j/3)">
-							Test Cell
+						<th *ngIf="j%3 == 0" class="col-{{j/3 + 1}}" (click)="cellClicked(i+j/3)">
+							<ng-container [ngSwitch]="grids[i + j/3]">
+								<ng-container *ngSwitchCase="0" > O </ng-container>
+								<ng-container *ngSwitchCase="1" > X </ng-container>
+							</ng-container>
 						</th>
 					</ng-container>
 				</tr>
