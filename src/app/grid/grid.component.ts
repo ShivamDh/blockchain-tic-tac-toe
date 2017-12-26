@@ -14,6 +14,7 @@ export class GridComponent implements OnInit {
 	turnNumber = 1;
 	gameMessage = "";
 	gameOver = false;
+	winnerInfo : any = {};
 
 	constructor() {
 		this.grids = Array(3).fill(0);
@@ -23,6 +24,42 @@ export class GridComponent implements OnInit {
 
 	ngOnInit() {
 
+	}
+
+	getClasses(row: number, col: number) {
+		var className = "col-" + col.toString();
+
+		if (!this.gameOver) {
+			return className;
+		}
+
+		switch (this.winnerInfo.direction) {
+			case 'horizontal':
+				if (row === this.winnerInfo.cellRow) {
+					className += ' horizontal';
+				}
+				break;
+
+			case 'vertical':
+				if (col === this.winnerInfo.cellCol) {
+					className += ' vertical';
+				}
+				break;
+
+			case 'diagonal':
+				if (row === col) {
+					className += ' diagonal';
+				}
+				break;
+			
+			case 'anti-diagonal':
+				if (row == this.grids.length-1-col) {
+					className += ' anti-diagonal';
+				}
+				break;
+		}
+
+		return className;
 	}
 
 	cellClicked(row: number, col: number) {
@@ -52,7 +89,6 @@ export class GridComponent implements OnInit {
 	}
 
 	// Add tic-tac-toe game logic to check if the game is completed
-	// Checking 
 	isGameOver(row: number, col: number) {
 		// Game can't be over until at least 5 total turns have been completed
 		if (this.turnNumber > 5) {
@@ -65,20 +101,31 @@ export class GridComponent implements OnInit {
 
 			// Horizontal 3-in-a-row
 			if (this.grids[row].every( (e) => e === newestCell)) {
-
+				this.gameOverMessage(this.grids[row][0]);
+				this.winnerInfo = {
+					direction: 'horizontal',
+					cellRow: row
+				}
 				return true;
 			}
 
 			// Vertical 3-in-a-row
 			if (this.grids.every( (r) => r[col] === newestCell)) {
-
+				this.gameOverMessage(this.grids[0][col]);
+				this.winnerInfo = {
+					direction: 'vertical',
+					cellCol: col
+				}
 				return true;
 			}
 			
 			if (row === col) {
 				// Diagonal (top-left to bottom-right) 3-in-a-row
 				if (this.grids.every( (r, i) => r[i] === newestCell)) {
-
+					this.gameOverMessage(this.grids[0][0]);
+					this.winnerInfo = {
+						direction: 'diagonal'
+					}
 					return true;
 				}
 			}
@@ -86,14 +133,30 @@ export class GridComponent implements OnInit {
 			if (row === this.grids.length - col - 1) {
 				// Anti-Diagonal (top-right to bottom-left) 3-in-a-row
 				if (this.grids.every( (r, i) => r[r.length-1-i] === newestCell)) {
-
+					this.gameOverMessage(this.grids[0][this.grids[0].length-1]);
+					this.winnerInfo = {
+						direction: 'anti-diagonal'
+					}
 					return true;
 				}
+			}
+
+			if (this.turnNumber > 9) {
+				this.gameMessage = "Game has ended in a draw";
+				return true;
 			}
 
 		}
 
 		return false;
+	}
+
+	gameOverMessage(cell: number) {
+		if (cell) {
+			this.gameMessage = "Player X won the game";
+		} else {
+			this.gameMessage = "Player O won the game";
+		}
 	}
 
 }
