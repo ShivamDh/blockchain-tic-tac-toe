@@ -14,7 +14,7 @@
 		border-collapse:collapse
 
 		tbody
-			font-size: 65px;
+			font-size: 75px;
 
 			.row-0, .row-1
 				width: 100%
@@ -36,9 +36,55 @@
 
 
 			.col-0, .col-2
+				position: relative
 				width: 98px
 				height: calc(100% / 3)
 
 			.col-1
+				position: relative
 				width: 104px
 				height: calc(100% / 3)
+
+			.horizontal:after
+				position: absolute
+				content: ''
+				background: red
+				display: block
+				width: 100%
+				height: 10px
+				left: 0
+				right: 0
+				top: 44%
+				bottom: 0
+
+			.vertical:after
+				position: absolute
+				content: ''
+				background: red
+				display: block
+				height: 100%
+				width: 10px
+				left: 44%
+				right: 0
+				top: 0
+				bottom: 0
+
+			.diagonal:after
+				position: absolute
+				content: ''
+				background: red
+				display: block
+				height: 10px
+				width: 145%
+				top: 0
+				transform: translateY(45px) translateX(-22px) rotate(45deg)
+
+			.anti-diagonal:after
+				position: absolute
+				content: ''
+				background: red
+				display: block
+				height: 145%
+				width: 10px
+				top: 0
+				transform: translateY(-25px) translateX(45px) rotate(45deg)
