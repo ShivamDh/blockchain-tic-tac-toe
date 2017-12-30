@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgSwitchCase } from '@angular/common';
-
-import SHA1 = require('crypto-js/sha1');
 
 @Component({
   selector: 'app-grid',
@@ -9,17 +7,22 @@ import SHA1 = require('crypto-js/sha1');
   styleUrls: ['./grid.component.sass']
 })
 export class GridComponent implements OnInit {
+
 	// -1 = unfilled slot, 0 = O (letter), 1 = X (letter)
 	grids = [];
-	turnNumber = 1;
-	gameMessage = "";
-	gameOver = false;
-	winnerInfo : any = {};
+	turnNumber: number;
+	gameMessage: string;
+	winnerInfo: any;
+	
+	@Input() gameOver: boolean;
+	@Output() gameStateChange: EventEmitter<boolean> = new EventEmitter<boolean>()
 
 	constructor() {
 		this.grids = Array(3).fill(0);
 		this.grids = this.grids.map( () => Array(3).fill(-1));
 		this.gameMessage = "It's Player X's turn";
+		this.winnerInfo = {};
+		this.turnNumber = 1;
 	}
 
 	ngOnInit() {
@@ -27,7 +30,7 @@ export class GridComponent implements OnInit {
 	}
 
 	getClasses(row: number, col: number) {
-		var className = "col-" + col.toString();
+		let className = "col-" + col.toString();
 
 		if (!this.gameOver) {
 			return className;
@@ -76,11 +79,14 @@ export class GridComponent implements OnInit {
 				this.gameMessage = this.gameMessage.replace("O", "X");
 			}
 			++this.turnNumber;
-			this.gameOver = this.isGameOver(row, col);
-	  		console.log(this.grids);
-			console.log(SHA1(JSON.stringify(this.grids)).toString());
+
+			let gameState = this.isGameOver(row, col);
+			if (gameState) {
+				this.gameOver = true;
+				this.gameStateChange.emit(true);
+			}
 		} else {
-			var oldMessage = this.gameMessage;
+			let oldMessage = this.gameMessage;
 			this.gameMessage = "Invalid cell clicked, try again";
 			setTimeout( () => {
 				this.gameMessage = oldMessage;
@@ -97,7 +103,7 @@ export class GridComponent implements OnInit {
 				All logic used below can be applied to a tic-tac-toe board of any size	
 			*/
 
-			var newestCell = this.grids[row][col];
+			let newestCell = this.grids[row][col];
 
 			// Horizontal 3-in-a-row
 			if (this.grids[row].every( (e) => e === newestCell)) {

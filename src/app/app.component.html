@@ -4,5 +4,17 @@
     	{{titleHeader}}
 	</h1>
 
-	<app-grid> </app-grid>
+	<app-grid
+		(gameStateChange)="receiveNewState($event)"
+		[gameOver]="gameOver"
+	>
+	</app-grid>
+
+	<button
+		*ngIf="gameOver"
+		class="mat-raised-button mat-primary"
+		(click)="resetGame()"
+	>
+		{{resetButtonString}}
+	</button>
 </div>
