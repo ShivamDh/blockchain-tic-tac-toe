@@ -5,7 +5,11 @@
 	<table class="table" style="border-collapse: collapse">
 		<tbody>
 			<tr *ngFor="let row of grids; let i = index" class="row-{{i}}">
-				<td *ngFor="let col of row; let j = index" [className]="getClasses(i, j)" (click)="cellClicked(i, j)">
+				<td
+					*ngFor="let col of row; let j = index"
+					[className]="getClasses(i, j)"
+					(click)="cellClicked(i, j)"
+				>
 					<ng-container [ngSwitch]="grids[i][j]">
 						<ng-container *ngSwitchCase="0" > O </ng-container>
 						<ng-container *ngSwitchCase="1" > X </ng-container>

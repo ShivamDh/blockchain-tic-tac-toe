@@ -18,11 +18,15 @@ export class GridComponent implements OnInit {
 	@Output() gameStateChange: EventEmitter<boolean> = new EventEmitter<boolean>()
 
 	constructor() {
-		this.grids = Array(3).fill(0);
-		this.grids = this.grids.map( () => Array(3).fill(-1));
+		this.fillEmptyArray();
 		this.gameMessage = "It's Player X's turn";
 		this.winnerInfo = {};
 		this.turnNumber = 1;
+	}
+
+	fillEmptyArray() {
+		this.grids = Array(3).fill(0);
+		this.grids = this.grids.map( () => Array(3).fill(-1));
 	}
 
 	ngOnInit() {
@@ -163,6 +167,13 @@ export class GridComponent implements OnInit {
 		} else {
 			this.gameMessage = "Player O won the game";
 		}
+	}
+
+	clear() {
+		this.fillEmptyArray();
+		this.gameMessage = "It's Player X's turn";
+		this.winnerInfo = {};
+		this.turnNumber = 1;
 	}
 
 }

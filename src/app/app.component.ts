@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
+
+import { GridComponent } from './grid/grid.component'
 
 @Component({
   selector: 'app-root',
@@ -13,6 +15,9 @@ export class AppComponent {
 	titleHeader: string;
 	resetButtonString: string;
 	gameOver: boolean;
+
+	@ViewChild(GridComponent)
+	private grid: GridComponent;
 
 	constructor() {
 		this.title = 'Blockchain Tic-Tac-Toe';
@@ -27,6 +32,7 @@ export class AppComponent {
 
 	resetGame() {
 		this.gameOver = false;
+		this.grid.clear();
 	}
 
 }
