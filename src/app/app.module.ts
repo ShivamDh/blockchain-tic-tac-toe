@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { BlockchainService } from './blockchain.service';
 
 import { AppComponent } from './app.component';
 import { GridComponent } from './grid/grid.component';
@@ -14,7 +15,7 @@ import { GridComponent } from './grid/grid.component';
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [BlockchainService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
