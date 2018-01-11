@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgSwitchCase } from '@angular/common';
 
+import { BlockchainService } from '../blockchain.service';
+
 @Component({
   selector: 'app-grid',
   templateUrl: './grid.component.html',
@@ -17,7 +19,7 @@ export class GridComponent implements OnInit {
 	@Input() gameOver: boolean;
 	@Output() gameStateChange: EventEmitter<boolean> = new EventEmitter<boolean>()
 
-	constructor() {
+	constructor(private blockchainService: BlockchainService) {
 		this.fillEmptyArray();
 		this.gameMessage = "It's Player X's turn";
 		this.winnerInfo = {};
@@ -75,7 +77,9 @@ export class GridComponent implements OnInit {
 		}
 
 		if (this.grids[row][col] == -1) {
-			if (this.turnNumber % 2) {
+			let gameWinner = this.turnNumber % 2 ? "X" : "O";
+
+			if (gameWinner === "X") {
 				this.grids[row][col] = 1;
 				this.gameMessage = this.gameMessage.replace("X", "O");
 			} else {
@@ -88,6 +92,9 @@ export class GridComponent implements OnInit {
 			if (gameState) {
 				this.gameOver = true;
 				this.gameStateChange.emit(true);
+
+				let gameScore = 9 - this.turnNumber;
+				this.blockchainService.addGameResult(gameWinner, gameScore, Date.now());
 			}
 		} else {
 			let oldMessage = this.gameMessage;
