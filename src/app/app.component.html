@@ -4,14 +4,16 @@
     	{{titleHeader}}
 	</h1>
 
-	<app-grid
-		(gameStateChange)="receiveNewState($event)"
-		[gameOver]="gameOver">
-	</app-grid>
+	<div class="flex main-screen">
 
-	<button
+		<app-grid
+			(gameStateChange)="receiveNewState($event)"
+			[gameOver]="gameOver">
+		</app-grid>
+	</div>
+
+	<button mat-raised-button color="primary"
 		*ngIf="gameOver"
-		class="mat-raised-button mat-primary"
 		(click)="resetGame()"
 	>
 		{{resetButtonString}}

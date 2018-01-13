@@ -1,10 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
 
-import { GridComponent } from './grid/grid.component'
-
 import { BlockchainService } from './blockchain.service';
+
+import { GridComponent } from './grid/grid.component'
 
 @Component({
   selector: 'app-root',
@@ -31,8 +30,6 @@ export class AppComponent {
 
 	receiveNewState($event) {
 		this.gameOver = $event;
-
-		console.log(this.blockchainService);
 	}
 
 	resetGame() {
