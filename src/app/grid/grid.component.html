@@ -11,8 +11,8 @@
 					(click)="cellClicked(i, j)"
 				>
 					<ng-container [ngSwitch]="grids[i][j]">
-						<ng-container *ngSwitchCase="0" > O </ng-container>
-						<ng-container *ngSwitchCase="1" > X </ng-container>
+						<div class="gridText" *ngSwitchCase="0" > O </div>
+						<div class="gridText" *ngSwitchCase="1" > X </div>
 					</ng-container>
 				</td>
 			</tr>

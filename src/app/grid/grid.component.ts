@@ -45,25 +45,25 @@ export class GridComponent implements OnInit {
 		switch (this.winnerInfo.direction) {
 			case 'horizontal':
 				if (row === this.winnerInfo.cellRow) {
-					className += ' horizontal';
+					className += ' selected';
 				}
 				break;
 
 			case 'vertical':
 				if (col === this.winnerInfo.cellCol) {
-					className += ' vertical';
+					className += ' selected';
 				}
 				break;
 
 			case 'diagonal':
 				if (row === col) {
-					className += ' diagonal';
+					className += ' selected';
 				}
 				break;
 			
 			case 'anti-diagonal':
 				if (row == this.grids.length-1-col) {
-					className += ' anti-diagonal';
+					className += ' selected';
 				}
 				break;
 		}
