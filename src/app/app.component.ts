@@ -1,8 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgIf } from '@angular/common';
 
-import { BlockchainService } from './blockchain.service';
-
 import { GridComponent } from './grid/grid.component'
 
 @Component({
@@ -21,7 +19,7 @@ export class AppComponent {
 	@ViewChild(GridComponent)
 	private grid: GridComponent;
 
-	constructor(private blockchainService: BlockchainService) {
+	constructor() {
 		this.title = 'Blockchain Tic-Tac-Toe';
 		this.titleHeader = 'Welcome to ' + this.title + '!';
 		this.gameOver = false;

@@ -9,23 +9,25 @@ import { BlockchainService } from './blockchain.service';
 
 import { AppComponent } from './app.component';
 import { GridComponent } from './grid/grid.component';
+import { GamesComponent } from './games/games.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    GridComponent
+    GridComponent,
+    GamesComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
   ],
   exports: [
   	BrowserAnimationsModule,
   	MatButtonModule,
-  	MatTableModule
+  	MatTableModule,
   ],
   providers: [BlockchainService],
   bootstrap: [AppComponent]
