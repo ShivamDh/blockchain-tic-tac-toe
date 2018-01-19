@@ -1,6 +1,23 @@
 <div class="games-history">
 
 	<div class="table-container mat-elevation-z8">
+	  <mat-table class="table-component" [dataSource]="dataSource">
+
+	    <!-- Position Column -->
+	    <ng-container matColumnDef="winner">
+	      <mat-header-cell *matHeaderCellDef> Winner </mat-header-cell>
+	      <mat-cell *matCellDef="let element"> {{element.winner}} </mat-cell>
+	    </ng-container>
+
+	    <!-- Name Column -->
+	    <ng-container matColumnDef="score">
+	      <mat-header-cell *matHeaderCellDef> Score </mat-header-cell>
+	      <mat-cell *matCellDef="let element"> {{element.score}} </mat-cell>
+	    </ng-container>
+
+	    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+	    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+	  </mat-table>
 	</div>
 
 </div>

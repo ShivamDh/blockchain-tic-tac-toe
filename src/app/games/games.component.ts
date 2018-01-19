@@ -14,6 +14,8 @@ export class GamesComponent implements OnInit {
 	dataSource: any;
 
 	constructor(private blockchainService: BlockchainService) {
+		// first element of array is genesis block, do not populate that into table
+		this.dataSource = this.blockchainService.games.slice(1);
 	}
 
 	ngOnInit() {
