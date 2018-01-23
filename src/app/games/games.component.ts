@@ -15,11 +15,15 @@ export class GamesComponent implements OnInit {
 
 	constructor(private blockchainService: BlockchainService) {
 		// first element of array is genesis block, do not populate that into table
-		this.dataSource = this.blockchainService.games.slice(1);
+		this.dataSource = this.blockchainService.games.slice(1).reverse();
 	}
 
 	ngOnInit() {
 
+	}
+
+	update() {
+		this.dataSource = this.blockchainService.games.slice(1).reverse();
 	}
 
 }

@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NgIf } from '@angular/common';
 
 import { GridComponent } from './grid/grid.component'
+import { GamesComponent } from './games/games.component'
 
 @Component({
   selector: 'app-root',
@@ -15,9 +16,11 @@ export class AppComponent {
 	resetButtonString: string;
 	gameOver: boolean;
 
-
 	@ViewChild(GridComponent)
 	private grid: GridComponent;
+
+	@ViewChild(GamesComponent)
+	private games: GamesComponent;
 
 	constructor() {
 		this.title = 'Blockchain Tic-Tac-Toe';
@@ -28,6 +31,7 @@ export class AppComponent {
 
 	receiveNewState($event) {
 		this.gameOver = $event;
+		this.games.update();
 	}
 
 	resetGame() {

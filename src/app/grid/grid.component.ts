@@ -11,15 +11,16 @@ import { BlockchainService } from '../blockchain.service';
 export class GridComponent implements OnInit {
 
 	// -1 = unfilled slot, 0 = O (letter), 1 = X (letter)
-	grids = [];
+	grids: Array<Array<number>>;
 	turnNumber: number;
 	gameMessage: string;
 	winnerInfo: any;
 	
 	@Input() gameOver: boolean;
-	@Output() gameStateChange: EventEmitter<boolean> = new EventEmitter<boolean>()
+	@Output() gameStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 	constructor(private blockchainService: BlockchainService) {
+		this.grids = [];
 		this.fillEmptyArray();
 		this.gameMessage = "It's Player X's turn";
 		this.winnerInfo = {};
@@ -91,10 +92,15 @@ export class GridComponent implements OnInit {
 			let gameState = this.isGameOver(row, col);
 			if (gameState) {
 				this.gameOver = true;
-				this.gameStateChange.emit(true);
+				let gameScore = 11 - this.turnNumber;
 
-				let gameScore = 9 - this.turnNumber;
+				if (this.turnNumber > 9) {
+					gameWinner = "None";
+					gameScore = 0;
+				}
+
 				this.blockchainService.addGameResult(gameWinner, gameScore, Date.now());
+				this.gameStateChange.emit(true);
 			}
 		} else {
 			let oldMessage = this.gameMessage;
