@@ -15,6 +15,8 @@ export class GridComponent implements OnInit {
 	turnNumber: number;
 	gameMessage: string;
 	winnerInfo: any;
+	xIsStarting: boolean;
+
 	
 	@Input() gameOver: boolean;
 	@Output() gameStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -22,9 +24,10 @@ export class GridComponent implements OnInit {
 	constructor(private blockchainService: BlockchainService) {
 		this.grids = [];
 		this.fillEmptyArray();
-		this.gameMessage = "It's Player X's turn";
-		this.winnerInfo = {};
+		this.xIsStarting = true
 		this.turnNumber = 1;
+		this.printTurnMessage();
+		this.winnerInfo = {};
 	}
 
 	fillEmptyArray() {
@@ -78,23 +81,23 @@ export class GridComponent implements OnInit {
 		}
 
 		if (this.grids[row][col] == -1) {
-			let gameWinner = this.turnNumber % 2 ? "X" : "O";
+			let gameWinner = this.turnNumber % 2 ^ this.xIsStarting ? "O" : "X";
 
 			if (gameWinner === "X") {
 				this.grids[row][col] = 1;
-				this.gameMessage = this.gameMessage.replace("X", "O");
 			} else {
 				this.grids[row][col] = 0;
-				this.gameMessage = this.gameMessage.replace("O", "X");
 			}
+
+			this.toggleTurnMessage();
 			++this.turnNumber;
 
 			let gameState = this.isGameOver(row, col);
 			if (gameState) {
 				this.gameOver = true;
-				let gameScore = 11 - this.turnNumber;
+				let gameScore = this.calculateScore();
 
-				if (this.turnNumber > 9) {
+				if (this.turnNumber > 10) {
 					gameWinner = "None";
 					gameScore = 0;
 				}
@@ -182,11 +185,54 @@ export class GridComponent implements OnInit {
 		}
 	}
 
+	calculateScore() : number {
+		if (this.turnNumber % 2) {
+
+			/*
+				Player who started game second can win a game in only 2 ways:
+					3 moves -> 3 points
+					4 moves -> 2 points
+			*/
+
+			return 6 - (this.turnNumber - 1)/2
+		} else {
+
+			/*
+				Player who started game first can win a game in only 2 ways:
+					3 moves -> 3 points
+					4 moves -> 2 points
+					5 moves -> 1 point
+			*/
+
+			return 6 - (this.turnNumber)/2
+		}
+	}
+
 	clear() {
 		this.fillEmptyArray();
-		this.gameMessage = "It's Player X's turn";
-		this.winnerInfo = {};
+
+		// change who is startin the game if the player who went first won
+		this.xIsStarting = this.turnNumber % 2 ? this.xIsStarting : !this.xIsStarting;
+
 		this.turnNumber = 1;
+		this.printTurnMessage();
+		this.winnerInfo = {};
+	}
+
+	printTurnMessage() {
+		if (this.turnNumber ^ this.xIsStarting) {
+			this.gameMessage = "It's Player O's turn";
+		} else {
+			this.gameMessage = "It's Player X's turn";
+		}
+	}
+
+	toggleTurnMessage() {
+		if (this.turnNumber % 2 ^ this.xIsStarting) {
+			this.gameMessage = this.gameMessage.replace("O", "X");
+		} else {
+			this.gameMessage = this.gameMessage.replace("X", "O");
+		}
 	}
 
 }
