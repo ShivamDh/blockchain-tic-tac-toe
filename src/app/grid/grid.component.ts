@@ -81,7 +81,9 @@ export class GridComponent implements OnInit {
 		}
 
 		if (this.grids[row][col] == -1) {
-			let gameWinner = this.turnNumber % 2 ^ this.xIsStarting ? "O" : "X";
+			let xTurn = this.turnNumber % 2 ? !this.xIsStarting : this.xIsStarting;
+
+			let gameWinner = xTurn ? "O" : "X";
 
 			if (gameWinner === "X") {
 				this.grids[row][col] = 1;
@@ -220,18 +222,20 @@ export class GridComponent implements OnInit {
 	}
 
 	printTurnMessage() {
-		if (this.turnNumber ^ this.xIsStarting) {
-			this.gameMessage = "It's Player O's turn";
-		} else {
+		let xTurn = this.turnNumber % 2 ? this.xIsStarting : !this.xIsStarting;
+		if (xTurn) {
 			this.gameMessage = "It's Player X's turn";
+		} else {
+			this.gameMessage = "It's Player O's turn";
 		}
 	}
 
 	toggleTurnMessage() {
-		if (this.turnNumber % 2 ^ this.xIsStarting) {
-			this.gameMessage = this.gameMessage.replace("O", "X");
-		} else {
+		let xPlayed = this.turnNumber % 2 ? this.xIsStarting : !this.xIsStarting;
+		if (xPlayed) {
 			this.gameMessage = this.gameMessage.replace("X", "O");
+		} else {
+			this.gameMessage = this.gameMessage.replace("O", "X");
 		}
 	}
 
