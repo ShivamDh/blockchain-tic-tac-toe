@@ -81,15 +81,10 @@ export class GridComponent implements OnInit {
 		}
 
 		if (this.grids[row][col] == -1) {
-			let xTurn = this.turnNumber % 2 ? !this.xIsStarting : this.xIsStarting;
+			let oTurn = this.turnNumber % 2 ? !this.xIsStarting : this.xIsStarting;
 
-			let gameWinner = xTurn ? "O" : "X";
-
-			if (gameWinner === "X") {
-				this.grids[row][col] = 1;
-			} else {
-				this.grids[row][col] = 0;
-			}
+			let gameWinner = oTurn ? "O" : "X";
+			this.grids[row][col] = oTurn ? 1 : 0;
 
 			this.toggleTurnMessage();
 			++this.turnNumber;
@@ -99,7 +94,7 @@ export class GridComponent implements OnInit {
 				this.gameOver = true;
 				let gameScore = this.calculateScore();
 
-				if (this.turnNumber > 10) {
+				if (this.turnNumber > 9) {
 					gameWinner = "None";
 					gameScore = 0;
 				}
@@ -147,8 +142,8 @@ export class GridComponent implements OnInit {
 				return true;
 			}
 			
+			// Diagonal (top-left to bottom-right) 3-in-a-row
 			if (row === col) {
-				// Diagonal (top-left to bottom-right) 3-in-a-row
 				if (this.grids.every( (r, i) => r[i] === newestCell)) {
 					this.gameOverMessage(this.grids[0][0]);
 					this.winnerInfo = {
@@ -158,8 +153,8 @@ export class GridComponent implements OnInit {
 				}
 			}
 
+			// Anti-Diagonal (top-right to bottom-left) 3-in-a-row
 			if (row === this.grids.length - col - 1) {
-				// Anti-Diagonal (top-right to bottom-left) 3-in-a-row
 				if (this.grids.every( (r, i) => r[r.length-1-i] === newestCell)) {
 					this.gameOverMessage(this.grids[0][this.grids[0].length-1]);
 					this.winnerInfo = {
