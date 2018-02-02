@@ -19,7 +19,9 @@ export class GridComponent implements OnInit {
 
 	
 	@Input() gameOver: boolean;
+	@Input() player: number;
 	@Output() gameStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@Input() pusherChannel: any;
 
 	constructor(private blockchainService: BlockchainService) {
 		this.grids = [];
@@ -28,6 +30,7 @@ export class GridComponent implements OnInit {
 		this.turnNumber = 1;
 		this.printTurnMessage();
 		this.winnerInfo = {};
+		this.listenForMove();
 	}
 
 	fillEmptyArray() {
@@ -80,28 +83,19 @@ export class GridComponent implements OnInit {
 			return;
 		}
 
-		if (this.grids[row][col] == -1) {
-			let oTurn = this.turnNumber % 2 ? !this.xIsStarting : this.xIsStarting;
+		let oTurn = this.turnNumber % 2 ? !this.xIsStarting : this.xIsStarting;
 
+		// Checks if that cell is empty in specific location
+		// and if it's the current player's turn
+		// NOTE: player 0 = 'X' and player 1 = 'O'
+		if (this.grids[row][col] == -1 && this.player === oTurn) {
 			let gameWinner = oTurn ? "O" : "X";
-			this.grids[row][col] = oTurn ? 1 : 0;
 
-			this.toggleTurnMessage();
-			++this.turnNumber;
-
-			let gameState = this.isGameOver(row, col);
-			if (gameState) {
-				this.gameOver = true;
-				let gameScore = this.calculateScore();
-
-				if (this.turnNumber > 9) {
-					gameWinner = "None";
-					gameScore = 0;
-				}
-
-				this.blockchainService.addGameResult(gameWinner, gameScore, Date.now());
-				this.gameStateChange.emit(true);
-			}
+			this.pusherChannel.trigger('client-fire', {
+				playerId: this.turnNumber % 2 ? 1 : 0,
+				row: row,
+				col: col
+			});
 		} else {
 			let oldMessage = this.gameMessage;
 			this.gameMessage = "Invalid cell clicked, try again";
@@ -232,6 +226,33 @@ export class GridComponent implements OnInit {
 		} else {
 			this.gameMessage = this.gameMessage.replace("O", "X");
 		}
+	}
+
+	listenForMove() {
+		this.pusherChannel.bind('client-fire', (obj) => {
+			let gameWinner = this.turnNumber % 2 ? "X" : "O";
+			this.grids[obj.row][obj.col] = obj.playerId;
+
+			this.grids[obj.row][obj.col] = obj.playerId;
+			this.toggleTurnMessage();
+
+			++this.turnNumber;
+
+			let gameState = this.isGameOver(obj.row, obj.col);
+			if (gameState) {
+				this.gameOver = true;
+
+				let gameScore = this.calculateScore();
+
+				if (this.turnNumber > 9) {
+					gameWinner = "None";
+					gameScore = 0;
+				}
+
+				this.blockchainService.addGameResult(gameWinner, gameScore, Date.now());
+				this.gameStateChange.emit(true);
+			}
+		});
 	}
 
 }

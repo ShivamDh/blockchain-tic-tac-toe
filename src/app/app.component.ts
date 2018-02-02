@@ -82,7 +82,7 @@ export class AppComponent {
 		});
 	}
 
-	setPlayer(players:number = 0) {
+	setPlayer(players:number = 1) {
         this.player = players - 1;
         if (players == 1) {
           this.canPlay = true;

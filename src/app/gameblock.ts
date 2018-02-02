@@ -1,4 +1,4 @@
-import SHA3 = require('crypto-js/sha3');
+import * as CryptoJS from 'crypto-js';
 
 export class GameBlock {
 	winner: string;
@@ -18,7 +18,7 @@ export class GameBlock {
 	}
 
 	calculateHash() {
-		return SHA3(
+		return CryptoJS.SHA1(
 			this.winner +
 			this.score.toString() +
 			this.timeStamp.toString() +

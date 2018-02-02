@@ -1,4 +1,3 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
 	<h1 class="title">
     	{{titleHeader}}
@@ -11,7 +10,8 @@
 
 		<app-grid
 			(gameStateChange)="receiveNewState($event)"
-			[gameOver]="gameOver">
+			[gameOver]="gameOver"
+			[pusherChannel]="pusherChannel">
 		</app-grid>
 	</div>
 
