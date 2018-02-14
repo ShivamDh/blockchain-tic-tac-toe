@@ -4,14 +4,14 @@ import { GameBlock } from './gameblock';
 
 @Injectable()
 export class BlockchainService {
-	games: GameBlock[] = [];
-	difficulty: number;
-	hashBeginsWith: string;
+  	games: GameBlock[] = [];
+  	difficulty: number;
+  	hashBeginsWith: string;
 
   	constructor() {
-  		this.games = [this.createGenesisBlock()];
-  		this.difficulty = 2;
-  		this.hashBeginsWith = Array(this.difficulty + 1).join("0");
+		this.games = [this.createGenesisBlock()];
+		this.difficulty = 2;
+		this.hashBeginsWith = Array(this.difficulty + 1).join("0");
   	}
 
   	createGenesisBlock() {
@@ -23,6 +23,8 @@ export class BlockchainService {
   	}
 
   	addGameResult(winner: string, gameScore: number, gameEndTime: number) {
+        this.checkChainValidity();
+
   		let newBlock = new GameBlock(
   			winner,
   			gameScore,
@@ -34,5 +36,22 @@ export class BlockchainService {
 
   		this.games.push(newBlock);
   	}
+
+    checkChainValidity() {
+        for (let i = 1; i < this.games.length; i++){
+
+            // block hash does not correspond to the data within it
+            if (this.chain[i].hash !== this.chain[i].calculateHash()) {
+                return false;
+            }
+
+            // block's previous hash does not match with chain 
+            if (this.chain[i].previousHash !== this.chain[i-1].hash) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 }

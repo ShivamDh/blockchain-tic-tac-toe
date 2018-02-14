@@ -88,7 +88,7 @@ export class GridComponent implements OnInit {
 		// Checks if that cell is empty in specific location
 		// and if it's the current player's turn
 		// NOTE: player 0 = 'X' and player 1 = 'O'
-		if (this.grids[row][col] == -1 && this.player === oTurn) {
+		if (this.grids[row][col] === -1 && this.player == oTurn) {
 			let gameWinner = oTurn ? "O" : "X";
 
 			this.pusherChannel.trigger('client-fire', {

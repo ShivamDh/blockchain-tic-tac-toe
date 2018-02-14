@@ -52,6 +52,8 @@ export class AppComponent {
 		this.grid.clear();
 	}
 
+	// initalizes the Pusher object from the API
+	// subscribes to standard Pusher requests for member changes and subscription
 	initalizePusher() {
 		let id = this.getQueryParameter('id');
 		if (!id) {
@@ -82,11 +84,12 @@ export class AppComponent {
 		});
 	}
 
+	// set player number
 	setPlayer(players:number = 1) {
         this.player = players - 1;
-        if (players == 1) {
+        if (players == 2) {
           this.canPlay = true;
-        } else if (players == 2) {
+        } else if (players > 2) {
           this.canPlay = false;
         }
       }
@@ -96,6 +99,7 @@ export class AppComponent {
         return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
 	}
 
+	// used to come up with a new game id every time
 	getUniqueId() : any {
 		return 'presence-' + CryptoJS.SHA1(Math.random().toString()).toString()
 	}
