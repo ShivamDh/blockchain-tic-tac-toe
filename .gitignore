@@ -10,7 +10,7 @@
 # Ignore npm/yarn debug log
 npm-debug.log
 
-package*
+package-lock.json
 
 tsconfig.json
 tslint.json
